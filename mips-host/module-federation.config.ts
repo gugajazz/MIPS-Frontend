@@ -9,7 +9,10 @@ export default createModuleFederationConfig({
   //     "rslib_provider@https://unpkg.com/module-federation-rslib-provider@latest/dist/mf/mf-manifest.json",
   // },
   remotes: {
-    provider: "mips_product_page@http://localhost:3001/mf-manifest.json",
+    mips_product_page_provider:
+      "mips_product_page@http://localhost:3001/mf-manifest.json",
+    mips_shopping_cart_provider:
+      "mips_shopping_cart@http://localhost:3002/mf-manifest.json",
   },
   shareStrategy: "loaded-first",
   shared: {

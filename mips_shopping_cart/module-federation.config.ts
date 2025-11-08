@@ -1,9 +1,9 @@
 import { createModuleFederationConfig } from "@module-federation/rsbuild-plugin";
 
 export default createModuleFederationConfig({
-  name: "mips_product_page",
+  name: "mips_shopping_cart",
   exposes: {
-    "./ProductPage": "./src/components/ProductPage.tsx",
+    "./ShoppingCart": "./src/components/ShoppingCart.tsx",
   },
   shared: {
     react: { singleton: true },
