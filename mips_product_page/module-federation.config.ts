@@ -3,7 +3,8 @@ import { createModuleFederationConfig } from "@module-federation/rsbuild-plugin"
 export default createModuleFederationConfig({
   name: "mips_product_page",
   exposes: {
-    ".": "./src/components/ProviderComponent.tsx",
+    // ".": "./src/components/ProviderComponent.tsx",
+    "./ProviderComponent": "./src/components/ProviderComponent.tsx",
   },
   shared: {
     react: { singleton: true },

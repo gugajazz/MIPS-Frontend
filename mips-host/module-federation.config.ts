@@ -1,7 +1,7 @@
 import { createModuleFederationConfig } from "@module-federation/rsbuild-plugin";
 
 export default createModuleFederationConfig({
-  name: "mips-host",
+  name: "mips_host",
   // remotes: {
   //   // Make sure this 'provider' URL is correct for your local setup
   //   // e.g., 'provider@http://localhost:3001/mf-manifest.json'
@@ -9,7 +9,7 @@ export default createModuleFederationConfig({
   //     "rslib_provider@https://unpkg.com/module-federation-rslib-provider@latest/dist/mf/mf-manifest.json",
   // },
   remotes: {
-    provider: "mips_product_page_name@http://localhost:3001/mf-manifest.json",
+    provider: "mips_product_page@http://localhost:3001/mf-manifest.json",
   },
   shareStrategy: "loaded-first",
   shared: {

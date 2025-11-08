@@ -5,16 +5,16 @@ services:
   # The Host Application (Consumer)
   ###################################
   host:
-    container_name: mips-host
+    container_name: mips_host
     build:
-      context: ./mips-host # Path to the host's folder
+      context: ./mips_host # Path to the host's folder
       dockerfile: Dockerfile # Name of the Dockerfile inside it
     command: pnpm dev
     ports:
       - "3000:3000"
     volumes:
       # Mount host code for live-reloading
-      - ./mips-host:/app
+      - ./mips_host:/app
       # Hide the host's node_modules
       - /app/node_modules
     environment:
