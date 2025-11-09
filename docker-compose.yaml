@@ -22,7 +22,7 @@ services:
       - REMOTE_PRODUCT_PAGE_URL=http://product-page:3001/mf-manifest.json
 
   ###################################
-  # The Remote Application (Provider)
+  # Product Page Remote Application (Provider)
   ###################################
   product-page:
     container_name: mips_product_page
@@ -34,4 +34,19 @@ services:
       - "3001:3001"
     volumes:
       - ./mips_product_page:/app
+      - /app/node_modules
+
+  ###################################
+  # Shopping Cart Remote Application (Provider)
+  ###################################
+  shopping-cart:
+    container_name: mips_shopping_cart
+    build:
+      context: ./mips_shopping_cart # Path to the remote's folder
+      dockerfile: Dockerfile # Name of the Dockerfile inside it
+    command: pnpm dev
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./mips_shopping_cart:/app
       - /app/node_modules

@@ -1,5 +1,5 @@
-# mips_host/Dockerfile
-FROM node:20-alpine
+# mips_shopping_cart_page/Dockerfile
+FROM node:25-alpine3.21
 
 # Install pnpm
 RUN npm install -g pnpm

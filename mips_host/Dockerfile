@@ -1,4 +1,4 @@
-# mips_product_page/Dockerfile
+# mips_host/Dockerfile
 FROM node:25-alpine3.21
 
 # Install pnpm
