@@ -21,8 +21,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import HomeIcon from "@mui/icons-material/Home";
 
 import SafeComponent from "./components/SafeComponent";
+
+import StorefrontIcon from "@mui/icons-material/Storefront";
 
 const darkTheme = createTheme({
   palette: {
@@ -117,13 +120,27 @@ const App = () => {
                 MIPS Host App (PoC)
               </Typography>
               <Box>
-                <Button component={RouterLink} to="/" sx={{ color: "white" }}>
+                <Button
+                  component={RouterLink}
+                  to="/"
+                  sx={{ color: "white" }}
+                  startIcon={
+                    <Badge badgeContent={cartItems.length} color="error">
+                      <HomeIcon />
+                    </Badge>
+                  }
+                >
                   Home
                 </Button>
                 <Button
                   component={RouterLink}
                   to="/products"
                   sx={{ color: "white" }}
+                  startIcon={
+                    <Badge badgeContent={cartItems.length} color="error">
+                      <StorefrontIcon />
+                    </Badge>
+                  }
                 >
                   Products
                 </Button>
