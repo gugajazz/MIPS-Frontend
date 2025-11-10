@@ -6,17 +6,15 @@ export default createModuleFederationConfig({
     "./ShoppingCartPage": "./src/components/ShoppingCart.tsx",
   },
   shared: {
-    react: { singleton: true },
-    "react-dom": { singleton: true },
-    "@mui/material": {
+    react: {
       singleton: true,
-      requiredVersion: "^5.0.0",
+      requiredVersion: "^18.0.0",
+    },
+    "react-dom": {
+      singleton: true,
+      requiredVersion: "^18.0.0",
     },
     "@emotion/react": {
-      singleton: true,
-      requiredVersion: "^11.0.0",
-    },
-    "@emotion/styled": {
       singleton: true,
       requiredVersion: "^11.0.0",
     },

@@ -1,4 +1,10 @@
 import React from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
 
 // 1. Define the same interfaces as the host
 export interface Product {
@@ -12,48 +18,11 @@ export interface CartItem {
   product: Product;
 }
 
-// 2. The props interface is updated
+// 2. The props interface is unchanged
 interface ShoppingCartPageProps {
-  items: CartItem[]; // Expects an array of CartItem
-  onRemoveFromCart: (instanceId: string) => void; // Expects an instanceId
+  items: CartItem[];
+  onRemoveFromCart: (instanceId: string) => void;
 }
-
-// --- STYLES (same as before) ---
-const cartPageStyles: React.CSSProperties = {
-  padding: "1.5rem",
-  border: "2px dashed #e63946",
-  borderRadius: "8px",
-  backgroundColor: "#1f1f1f",
-  textAlign: "left",
-  color: "#f1f1f1",
-  maxWidth: "800px",
-  margin: "1rem 0",
-};
-
-const headerStyles: React.CSSProperties = {
-  color: "#e63946",
-  marginTop: 0,
-};
-
-const cartItemStyles: React.CSSProperties = {
-  padding: "1rem",
-  backgroundColor: "#2a2a2a",
-  borderRadius: "5px",
-  marginBottom: "1rem",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-};
-
-const removeButtonStyles: React.CSSProperties = {
-  backgroundColor: "#e63946",
-  color: "white",
-  border: "none",
-  padding: "8px 12px",
-  borderRadius: "5px",
-  cursor: "pointer",
-  fontWeight: "bold",
-};
 
 // --- COMPONENT ---
 
@@ -65,46 +34,119 @@ const ShoppingCartPage = ({
   const totalPrice = items.reduce((sum, item) => sum + item.product.price, 0);
 
   return (
-    <div style={cartPageStyles}>
-      <h2 style={headerStyles}>🛒 Shopping Cart (Loaded from Remote)</h2>
-      <p>Lists items from the host and calls `onRemoveFromCart`.</p>
+    <Box
+      sx={{
+        p: "1.5rem",
+        border: "2px dashed",
+        borderColor: "error.main",
+        borderRadius: "8px",
+        // --- FIXED ---
+        // Replaced hard-coded "#1f1f1f" with theme-aware palette key
+        bgcolor: "background.paper",
+        // Removed hard-coded color: "#f1f1f1".
+        // Typography components will now default to "text.primary".
+        // ---
+        maxWidth: "800px",
+        my: "1rem",
+        textAlign: "left",
+      }}
+    >
+      <Typography
+        variant="h4"
+        component="h2"
+        sx={{
+          color: "error.main", // This was already theme-aware
+          mt: 0,
+          fontWeight: "bold",
+        }}
+      >
+        🛒 Shopping Cart (Loaded from Remote)
+      </Typography>
 
-      <div>
+      <Typography variant="body1" sx={{ mb: 2 }}>
+        Lists items from the host and calls `onRemoveFromCart`.
+      </Typography>
+
+      <Box>
         {items.length === 0 ? (
-          <p>Your cart is empty.</p>
+          <Typography variant="body1">Your cart is empty.</Typography>
         ) : (
-          // 4. Update the .map() to use the new structure
-          items.map((item) => (
-            <div key={item.instanceId} style={cartItemStyles}>
-              {" "}
-              {/* Use unique key */}
-              <div>
-                {/* Access data via 'item.product' */}
-                <h4 style={{ margin: 0 }}>{item.product.name}</h4>
-                <p style={{ margin: "5px 0 0 0" }}>
-                  ${item.product.price.toFixed(2)}
-                </p>
-              </div>
-              <button
-                style={removeButtonStyles}
-                onClick={() => onRemoveFromCart(item.instanceId)} // Pass instanceId
+          <List sx={{ padding: 0 }}>
+            {items.map((item) => (
+              <ListItem
+                key={item.instanceId}
+                sx={{
+                  p: "1rem",
+                  // --- FIXED ---
+                  // Removed hard-coded 'bgcolor: "#2a2a2a"'.
+                  // Item now sits on the parent's "background.paper".
+                  // ---
+                  borderRadius: "5px",
+                  mb: "1rem",
+                }}
+                secondaryAction={
+                  <Button
+                    variant="contained"
+                    color="error" // This was already theme-aware
+                    onClick={() => onRemoveFromCart(item.instanceId)}
+                    sx={{
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Remove
+                  </Button>
+                }
               >
-                Remove
-              </button>
-            </div>
-          ))
+                <Box>
+                  <Typography
+                    variant="h6"
+                    component="h4"
+                    sx={{
+                      margin: 0,
+                      // --- FIXED ---
+                      // Removed 'color: "inherit"' to allow
+                      // default theme-aware text color.
+                      // ---
+                    }}
+                  >
+                    {item.product.name}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    component="p"
+                    sx={{
+                      margin: "5px 0 0 0",
+                      // --- FIXED ---
+                      // Removed 'color: "inherit"'.
+                      // ---
+                    }}
+                  >
+                    ${item.product.price.toFixed(2)}
+                  </Typography>
+                </Box>
+              </ListItem>
+            ))}
+          </List>
         )}
-      </div>
+      </Box>
 
       {items.length > 0 && (
         <>
-          <hr />
-          <h3 style={{ textAlign: "right" }}>
+          {/* --- FIXED --- */}
+          {/* Removed hard-coded 'borderColor: "#444"'. */}
+          {/* Divider now correctly uses 'palette.divider'. */}
+          {/* --- */}
+          <Divider sx={{ my: 2 }} />
+          <Typography
+            variant="h5"
+            component="h3"
+            sx={{ textAlign: "right", fontWeight: "bold" }}
+          >
             Total: ${totalPrice.toFixed(2)}
-          </h3>
+          </Typography>
         </>
       )}
-    </div>
+    </Box>
   );
 };
 

@@ -21,14 +21,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import HomeIcon from "@mui/icons-material/Home";
+import IconButton from "@mui/material/IconButton"; // Added
+import Brightness4Icon from "@mui/icons-material/Brightness4"; // Added
+import Brightness7Icon from "@mui/icons-material/Brightness7"; // Added
 
 import SafeComponent from "./components/SafeComponent";
 
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+import StorefrontIcon from "@mui/icons-material/Storefront";
 
 // 1. Define the Product interface (as seen by the ProductPage)
 export interface Product {
@@ -67,6 +67,26 @@ const HomePage = () => (
 
 // --- Main App Component ---
 const App = () => {
+  // --- Theme State ---
+  const [mode, setMode] = React.useState<"light" | "dark">("dark");
+
+  // Toggle theme mode
+  const toggleColorMode = () => {
+    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+  };
+
+  // Create theme based on mode, memoized to avoid re-creation on
+  // every render unless 'mode' changes.
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode]
+  );
+
   // 4. Host state (unchanged)
   const [cartItems, setCartItems] = React.useState<CartItem[]>([]);
 
@@ -102,11 +122,16 @@ const App = () => {
   );
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline /> {/* Normalizes styles and applies dark bg */}
+    <ThemeProvider theme={theme}>
+      <CssBaseline /> {/* Normalizes styles and applies theme bg */}
       <BrowserRouter>
         {/* --- MUI Navigation Bar --- */}
-        <AppBar position="static" color="default">
+        {/* FIX 1: Changed 'color="default"' to 'color="primary"'
+          'default' is often white/light grey, which clashed with the
+          hardcoded 'color: "white"' on the buttons. 
+          'primary' is a semantic, theme-aware color.
+        */}
+        <AppBar position="static" color="primary">
           <Container maxWidth="lg">
             <Toolbar disableGutters>
               <Typography
@@ -117,20 +142,32 @@ const App = () => {
                 MIPS Host App (PoC)
               </Typography>
               <Box>
-                <Button component={RouterLink} to="/" sx={{ color: "white" }}>
+                <Button
+                  component={RouterLink}
+                  to="/"
+                  /*
+                    FIX 2: Changed 'sx={{ color: "white" }}' to 'color="inherit"'
+                    This tells the button to use the 'contrastText' defined
+                    for the AppBar's color (in this case, 'primary.contrastText'),
+                    which is the correct, theme-aware way to do this.
+                  */
+                  color="inherit"
+                  startIcon={<HomeIcon />}
+                >
                   Home
                 </Button>
                 <Button
                   component={RouterLink}
                   to="/products"
-                  sx={{ color: "white" }}
+                  color="inherit"
+                  startIcon={<StorefrontIcon />}
                 >
                   Products
                 </Button>
                 <Button
                   component={RouterLink}
                   to="/cart"
-                  sx={{ color: "white" }}
+                  color="inherit"
                   startIcon={
                     <Badge badgeContent={cartItems.length} color="error">
                       <ShoppingCartIcon />
@@ -139,6 +176,15 @@ const App = () => {
                 >
                   Cart
                 </Button>
+
+                {/* --- NEW: Theme Toggle Button --- */}
+                <IconButton
+                  sx={{ ml: 1 }}
+                  onClick={toggleColorMode}
+                  color="inherit"
+                >
+                  {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+                </IconButton>
               </Box>
             </Toolbar>
           </Container>
@@ -146,13 +192,17 @@ const App = () => {
 
         {/* --- Main Content Area --- */}
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          {/* Using Paper for a contained look, with the green border */}
           <Paper
             elevation={3}
             sx={{
-              border: "2px solid #28a745",
+              /*
+                FIX 3: Changed hardcoded green to use the theme's palette.
+                'success.main' is the semantic token for "green".
+              */
+              border: "2px solid",
+              borderColor: "success.main",
               minHeight: "60vh",
-              overflow: "hidden", // Good for nested rounded corners
+              overflow: "hidden",
             }}
           >
             {/* A single Suspense for all routes */}
@@ -163,7 +213,9 @@ const App = () => {
                   path="/products"
                   element={
                     <SafeComponent>
-                      <RemoteProductPage onAddToCart={handleAddToCart} />
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <RemoteProductPage onAddToCart={handleAddToCart} />
+                      </Box>
                     </SafeComponent>
                   }
                 />
@@ -171,10 +223,12 @@ const App = () => {
                   path="/cart"
                   element={
                     <SafeComponent>
-                      <RemoteShoppingCartPage
-                        items={cartItems}
-                        onRemoveFromCart={handleRemoveFromCart}
-                      />
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <RemoteShoppingCartPage
+                          items={cartItems}
+                          onRemoveFromCart={handleRemoveFromCart}
+                        />
+                      </Box>
                     </SafeComponent>
                   }
                 />

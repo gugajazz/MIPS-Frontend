@@ -1,7 +1,11 @@
 import React from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
 // 1. A shared type for our product.
-//    (In a real app, this would be in a shared 'types' folder)
 export interface Product {
   id: string;
   name: string;
@@ -20,70 +24,104 @@ const dummyProducts: Product[] = [
   { id: "p3", name: "MIPS Sticker Pack", price: 9.99 },
 ];
 
-// --- STYLES ---
-
-const productPageStyles: React.CSSProperties = {
-  padding: "1.5rem",
-  border: "2px dashed #007bff", // Blue dashed border
-  borderRadius: "8px",
-  backgroundColor: "#17181aff",
-  textAlign: "left",
-  color: "#f1f1f1",
-  maxWidth: "800px",
-  margin: "1rem 0",
-};
-
-const headerStyles: React.CSSProperties = {
-  color: "#007bff",
-  marginTop: 0,
-};
-
-const productListStyles: React.CSSProperties = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-  gap: "1rem",
-};
-
-const productItemStyles: React.CSSProperties = {
-  padding: "1rem",
-  backgroundColor: "#2a2a2a",
-  borderRadius: "5px",
-};
-
-const buttonStyles: React.CSSProperties = {
-  backgroundColor: "#007bff",
-  color: "white",
-  border: "none",
-  padding: "10px 15px",
-  borderRadius: "5px",
-  cursor: "pointer",
-  fontWeight: "bold",
-  width: "100%",
-};
-
 // --- COMPONENT ---
 
 const ProductPage = ({ onAddToCart = () => {} }: ProductPageProps) => {
   return (
-    <div style={productPageStyles}>
-      <h2 style={headerStyles}>📦 Product Page (Loaded from Remote)</h2>
-      <p>
+    // Replaced main <div> with MUI Box
+    <Box
+      sx={{
+        p: "1.5rem",
+        border: "2px dashed",
+        borderColor: "primary.main", // This was correct
+        borderRadius: "8px",
+        /*
+          FIX 1: Replaced hardcoded background with 'background.paper'.
+          This is the semantic token for main content surfaces and containers.
+        */
+        bgcolor: "background.paper",
+        /*
+          FIX 2: Replaced hardcoded text color with 'text.primary'.
+          This ensures the text has the correct primary contrast against
+          'background.paper' in *both* light and dark modes.
+        */
+        color: "text.primary",
+        maxWidth: "800px",
+        my: "1rem",
+        textAlign: "left",
+      }}
+    >
+      {/* Replaced <h2> with Typography */}
+      <Typography
+        variant="h4"
+        component="h2"
+        sx={{
+          color: "primary.main", // This was correct
+          mt: 0,
+          fontWeight: "bold",
+        }}
+      >
+        📦 Product Page (Loaded from Remote)
+      </Typography>
+
+      {/* Replaced <p> with Typography */}
+      <Typography variant="body1" sx={{ mb: 2, color: "text.secondary" }}>
+        {/* Changed to text.secondary for slightly less emphasis, a common pattern */}
         This component lists products and calls the host's `onAddToCart`
         function.
-      </p>
+      </Typography>
 
-      <div style={productListStyles}>
+      {/* Replaced <div> with Box, kept grid styles in `sx` */}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gap: "1rem",
+        }}
+      >
         {dummyProducts.map((product) => (
-          <div key={product.id} style={productItemStyles}>
-            <h4 style={{ marginTop: 0 }}>{product.name}</h4>
-            <p>${product.price.toFixed(2)}</p>
-            <button style={buttonStyles} onClick={() => onAddToCart(product)}>
-              Add to Cart
-            </button>
-          </div>
+          <Card
+            key={product.id}
+            sx={{
+              /*
+                FIX 3: Replaced hardcoded item background with 'background.default'.
+                'background.default' is the page's main background. Using it here
+                makes the card look "inset" within the 'background.paper' container,
+                which is a clean, theme-aware pattern.
+              */
+              bgcolor: "background.default",
+              color: "inherit", // This was correct
+            }}
+          >
+            <CardContent>
+              <Typography
+                variant="h6"
+                component="h4"
+                sx={{ marginTop: 0, fontWeight: "bold" }}
+              >
+                {product.name}
+              </Typography>
+
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                ${product.price.toFixed(2)}
+              </Typography>
+
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={() => onAddToCart(product)}
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                Add to Cart
+              </Button>
+            </CardContent>
+          </Card>
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

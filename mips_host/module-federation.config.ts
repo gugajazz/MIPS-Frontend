@@ -43,5 +43,9 @@ export default createModuleFederationConfig({
       singleton: true,
       requiredVersion: "^11.0.0", // Make sure version matches your package.json
     },
+    "@emotion/react": {
+      singleton: true,
+      requiredVersion: "^11.0.0",
+    },
   },
 });
