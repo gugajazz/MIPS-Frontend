@@ -124,11 +124,7 @@ const App = () => {
                   component={RouterLink}
                   to="/"
                   sx={{ color: "white" }}
-                  startIcon={
-                    <Badge badgeContent={cartItems.length} color="error">
-                      <HomeIcon />
-                    </Badge>
-                  }
+                  startIcon={<HomeIcon />}
                 >
                   Home
                 </Button>
@@ -136,11 +132,7 @@ const App = () => {
                   component={RouterLink}
                   to="/products"
                   sx={{ color: "white" }}
-                  startIcon={
-                    <Badge badgeContent={cartItems.length} color="error">
-                      <StorefrontIcon />
-                    </Badge>
-                  }
+                  startIcon={<StorefrontIcon />}
                 >
                   Products
                 </Button>
