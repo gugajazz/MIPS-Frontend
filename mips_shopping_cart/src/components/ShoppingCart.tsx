@@ -20,8 +20,8 @@ export interface CartItem {
 
 // 2. The props interface is unchanged
 interface ShoppingCartPageProps {
-  items: CartItem[]; // Expects an array of CartItem
-  onRemoveFromCart: (instanceId: string) => void; // Expects an instanceId
+  items: CartItem[];
+  onRemoveFromCart: (instanceId: string) => void;
 }
 
 // --- COMPONENT ---
@@ -34,34 +34,35 @@ const ShoppingCartPage = ({
   const totalPrice = items.reduce((sum, item) => sum + item.product.price, 0);
 
   return (
-    // Replaced main <div> with MUI Box and `style` with `sx` prop
     <Box
       sx={{
         p: "1.5rem",
         border: "2px dashed",
-        borderColor: "error.main", // Use theme color
+        borderColor: "error.main",
         borderRadius: "8px",
-        bgcolor: "#1f1f1f", // Your custom background
-        color: "#f1f1f1", // Your custom text color
+        // --- FIXED ---
+        // Replaced hard-coded "#1f1f1f" with theme-aware palette key
+        bgcolor: "background.paper",
+        // Removed hard-coded color: "#f1f1f1".
+        // Typography components will now default to "text.primary".
+        // ---
         maxWidth: "800px",
-        my: "1rem", // Replaces margin: "1rem 0"
+        my: "1rem",
         textAlign: "left",
       }}
     >
-      {/* Replaced <h2> with Typography */}
       <Typography
-        variant="h4" // Good semantic equivalent for <h2>
-        component="h2" // Keeps the HTML tag
+        variant="h4"
+        component="h2"
         sx={{
-          color: "error.main", // Use theme color
+          color: "error.main", // This was already theme-aware
           mt: 0,
-          fontWeight: "bold", // Headers are bold by default, but explicit
+          fontWeight: "bold",
         }}
       >
         🛒 Shopping Cart (Loaded from Remote)
       </Typography>
 
-      {/* Replaced <p> with Typography */}
       <Typography variant="body1" sx={{ mb: 2 }}>
         Lists items from the host and calls `onRemoveFromCart`.
       </Typography>
@@ -70,49 +71,55 @@ const ShoppingCartPage = ({
         {items.length === 0 ? (
           <Typography variant="body1">Your cart is empty.</Typography>
         ) : (
-          // Use MUI List for semantic list
           <List sx={{ padding: 0 }}>
-            {/* 4. Update the .map() to use the new structure */}
             {items.map((item) => (
-              // Use ListItem for semantic item
               <ListItem
-                key={item.instanceId} // Use unique key
+                key={item.instanceId}
                 sx={{
                   p: "1rem",
-                  bgcolor: "#2a2a2a", // Your custom item background
+                  // --- FIXED ---
+                  // Removed hard-coded 'bgcolor: "#2a2a2a"'.
+                  // Item now sits on the parent's "background.paper".
+                  // ---
                   borderRadius: "5px",
                   mb: "1rem",
                 }}
-                // `secondaryAction` is the robust MUI way to add a button/control
-                // to the end of a list item.
                 secondaryAction={
                   <Button
-                    variant="contained" // Gives background color
-                    color="error" // Uses the red from the theme
-                    onClick={() => onRemoveFromCart(item.instanceId)} // Pass instanceId
+                    variant="contained"
+                    color="error" // This was already theme-aware
+                    onClick={() => onRemoveFromCart(item.instanceId)}
                     sx={{
-                      fontWeight: "bold", // Your custom style
+                      fontWeight: "bold",
                     }}
                   >
                     Remove
                   </Button>
                 }
               >
-                {/* Using Box and Typography here instead of ListItemText
-                  to precisely match your original h4/p margin styles.
-                */}
                 <Box>
                   <Typography
                     variant="h6"
                     component="h4"
-                    sx={{ margin: 0, color: "inherit" }} // Inherit parent's #f1f1f1
+                    sx={{
+                      margin: 0,
+                      // --- FIXED ---
+                      // Removed 'color: "inherit"' to allow
+                      // default theme-aware text color.
+                      // ---
+                    }}
                   >
                     {item.product.name}
                   </Typography>
                   <Typography
                     variant="body1"
                     component="p"
-                    sx={{ margin: "5px 0 0 0", color: "inherit" }} // Inherit
+                    sx={{
+                      margin: "5px 0 0 0",
+                      // --- FIXED ---
+                      // Removed 'color: "inherit"'.
+                      // ---
+                    }}
                   >
                     ${item.product.price.toFixed(2)}
                   </Typography>
@@ -125,10 +132,11 @@ const ShoppingCartPage = ({
 
       {items.length > 0 && (
         <>
-          {/* Replaced <hr> with MUI Divider */}
-          <Divider sx={{ borderColor: "#444", my: 2 }} />{" "}
-          {/* Lighten divider for dark bg */}
-          {/* Replaced <h3> with Typography */}
+          {/* --- FIXED --- */}
+          {/* Removed hard-coded 'borderColor: "#444"'. */}
+          {/* Divider now correctly uses 'palette.divider'. */}
+          {/* --- */}
+          <Divider sx={{ my: 2 }} />
           <Typography
             variant="h5"
             component="h3"

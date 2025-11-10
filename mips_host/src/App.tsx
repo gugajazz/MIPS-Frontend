@@ -29,7 +29,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 
 const darkTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
   },
 });
 
