@@ -2,12 +2,6 @@ import { createModuleFederationConfig } from "@module-federation/rsbuild-plugin"
 
 export default createModuleFederationConfig({
   name: "mips_host",
-  // remotes: {
-  //   // Make sure this 'provider' URL is correct for your local setup
-  //   // e.g., 'provider@http://localhost:3001/mf-manifest.json'
-  //   provider:
-  //     "rslib_provider@https://unpkg.com/module-federation-rslib-provider@latest/dist/mf/mf-manifest.json",
-  // },
   remotes: {
     mips_product_page_provider:
       "mips_product_page@http://localhost:3001/mf-manifest.json",
@@ -16,20 +10,38 @@ export default createModuleFederationConfig({
   },
   shareStrategy: "loaded-first",
   shared: {
+    // --- CORE REACT ---
     react: {
       singleton: true,
-      /**
-       * Add the version from your host's package.json.
-       * This tells MF to provide a version compatible with ^18.0.0.
-       */
       requiredVersion: "^18.0.0",
+      shareScope: "default", // <-- THIS IS THE FIX
     },
     "react-dom": {
       singleton: true,
-      /**
-       * Match the react version.
-       */
       requiredVersion: "^18.0.0",
+      shareScope: "default", // <-- THIS IS THE FIX
+    },
+    // "react-router-dom": {
+    //   singleton: true,
+    //   requiredVersion: "^6.0.0", // Make sure version matches your package.json
+    // },
+
+    // --- MUI & EMOTION ---
+    "@mui/material": {
+      singleton: true,
+      requiredVersion: "^5.0.0", // Make sure version matches your package.json
+    },
+    "@mui/icons-material": {
+      singleton: true,
+      requiredVersion: "^5.0.0", // Make sure version matches your package.json
+    },
+    "@emotion/react": {
+      singleton: true,
+      requiredVersion: "^11.0.0", // Make sure version matches your package.json
+    },
+    "@emotion/styled": {
+      singleton: true,
+      requiredVersion: "^11.0.0", // Make sure version matches your package.json
     },
   },
 });
