@@ -1,7 +1,11 @@
 import React from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
 // 1. A shared type for our product.
-//    (In a real app, this would be in a shared 'types' folder)
 export interface Product {
   id: string;
   name: string;
@@ -20,70 +24,93 @@ const dummyProducts: Product[] = [
   { id: "p3", name: "MIPS Sticker Pack", price: 9.99 },
 ];
 
-// --- STYLES ---
-
-const productPageStyles: React.CSSProperties = {
-  padding: "1.5rem",
-  border: "2px dashed #007bff", // Blue dashed border
-  borderRadius: "8px",
-  backgroundColor: "#17181aff",
-  textAlign: "left",
-  color: "#f1f1f1",
-  maxWidth: "800px",
-  margin: "1rem 0",
-};
-
-const headerStyles: React.CSSProperties = {
-  color: "#007bff",
-  marginTop: 0,
-};
-
-const productListStyles: React.CSSProperties = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-  gap: "1rem",
-};
-
-const productItemStyles: React.CSSProperties = {
-  padding: "1rem",
-  backgroundColor: "#2a2a2a",
-  borderRadius: "5px",
-};
-
-const buttonStyles: React.CSSProperties = {
-  backgroundColor: "#007bff",
-  color: "white",
-  border: "none",
-  padding: "10px 15px",
-  borderRadius: "5px",
-  cursor: "pointer",
-  fontWeight: "bold",
-  width: "100%",
-};
-
 // --- COMPONENT ---
 
 const ProductPage = ({ onAddToCart = () => {} }: ProductPageProps) => {
   return (
-    <div style={productPageStyles}>
-      <h2 style={headerStyles}>📦 Product Page (Loaded from Remote)</h2>
-      <p>
+    // Replaced main <div> with MUI Box
+    <Box
+      sx={{
+        p: "1.5rem",
+        border: "2px dashed",
+        borderColor: "primary.main", // Use theme color
+        borderRadius: "8px",
+        bgcolor: "#17181aff", // Your custom background
+        color: "#f1f1f1", // Your custom text
+        maxWidth: "800px",
+        my: "1rem", // Replaces margin: "1rem 0"
+        textAlign: "left",
+      }}
+    >
+      {/* Replaced <h2> with Typography */}
+      <Typography
+        variant="h4"
+        component="h2"
+        sx={{
+          color: "primary.main", // Use theme color
+          mt: 0,
+          fontWeight: "bold",
+        }}
+      >
+        📦 Product Page (Loaded from Remote)
+      </Typography>
+
+      {/* Replaced <p> with Typography */}
+      <Typography variant="body1" sx={{ mb: 2 }}>
         This component lists products and calls the host's `onAddToCart`
         function.
-      </p>
+      </Typography>
 
-      <div style={productListStyles}>
+      {/* Replaced <div> with Box, kept grid styles in `sx` */}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gap: "1rem",
+        }}
+      >
         {dummyProducts.map((product) => (
-          <div key={product.id} style={productItemStyles}>
-            <h4 style={{ marginTop: 0 }}>{product.name}</h4>
-            <p>${product.price.toFixed(2)}</p>
-            <button style={buttonStyles} onClick={() => onAddToCart(product)}>
-              Add to Cart
-            </button>
-          </div>
+          // Replaced <div> with Card for a more semantic item
+          <Card
+            key={product.id}
+            sx={{
+              bgcolor: "#2a2a2a", // Your custom item background
+              color: "inherit", // Inherit text color from parent Box
+            }}
+          >
+            {/* CardContent adds MUI-standardized padding */}
+            <CardContent>
+              {/* Replaced <h4> with Typography */}
+              <Typography
+                variant="h6"
+                component="h4"
+                sx={{ marginTop: 0, fontWeight: "bold" }}
+              >
+                {product.name}
+              </Typography>
+
+              {/* Replaced <p> with Typography */}
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                ${product.price.toFixed(2)}
+              </Typography>
+
+              {/* Replaced <button> with Button */}
+              <Button
+                variant="contained" // Gives background
+                color="primary" // Uses blue theme color
+                fullWidth // Replaces width: "100%"
+                onClick={() => onAddToCart(product)}
+                sx={{
+                  fontWeight: "bold", // Your custom style
+                }}
+              >
+                Add to Cart
+              </Button>
+            </CardContent>
+          </Card>
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
