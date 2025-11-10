@@ -33,12 +33,21 @@ const ProductPage = ({ onAddToCart = () => {} }: ProductPageProps) => {
       sx={{
         p: "1.5rem",
         border: "2px dashed",
-        borderColor: "primary.main", // Use theme color
+        borderColor: "primary.main", // This was correct
         borderRadius: "8px",
-        bgcolor: "#17181aff", // Your custom background
-        color: "#f1f1f1", // Your custom text
+        /*
+          FIX 1: Replaced hardcoded background with 'background.paper'.
+          This is the semantic token for main content surfaces and containers.
+        */
+        bgcolor: "background.paper",
+        /*
+          FIX 2: Replaced hardcoded text color with 'text.primary'.
+          This ensures the text has the correct primary contrast against
+          'background.paper' in *both* light and dark modes.
+        */
+        color: "text.primary",
         maxWidth: "800px",
-        my: "1rem", // Replaces margin: "1rem 0"
+        my: "1rem",
         textAlign: "left",
       }}
     >
@@ -47,7 +56,7 @@ const ProductPage = ({ onAddToCart = () => {} }: ProductPageProps) => {
         variant="h4"
         component="h2"
         sx={{
-          color: "primary.main", // Use theme color
+          color: "primary.main", // This was correct
           mt: 0,
           fontWeight: "bold",
         }}
@@ -56,7 +65,8 @@ const ProductPage = ({ onAddToCart = () => {} }: ProductPageProps) => {
       </Typography>
 
       {/* Replaced <p> with Typography */}
-      <Typography variant="body1" sx={{ mb: 2 }}>
+      <Typography variant="body1" sx={{ mb: 2, color: "text.secondary" }}>
+        {/* Changed to text.secondary for slightly less emphasis, a common pattern */}
         This component lists products and calls the host's `onAddToCart`
         function.
       </Typography>
@@ -70,17 +80,20 @@ const ProductPage = ({ onAddToCart = () => {} }: ProductPageProps) => {
         }}
       >
         {dummyProducts.map((product) => (
-          // Replaced <div> with Card for a more semantic item
           <Card
             key={product.id}
             sx={{
-              bgcolor: "#2a2a2a", // Your custom item background
-              color: "inherit", // Inherit text color from parent Box
+              /*
+                FIX 3: Replaced hardcoded item background with 'background.default'.
+                'background.default' is the page's main background. Using it here
+                makes the card look "inset" within the 'background.paper' container,
+                which is a clean, theme-aware pattern.
+              */
+              bgcolor: "background.default",
+              color: "inherit", // This was correct
             }}
           >
-            {/* CardContent adds MUI-standardized padding */}
             <CardContent>
-              {/* Replaced <h4> with Typography */}
               <Typography
                 variant="h6"
                 component="h4"
@@ -89,19 +102,17 @@ const ProductPage = ({ onAddToCart = () => {} }: ProductPageProps) => {
                 {product.name}
               </Typography>
 
-              {/* Replaced <p> with Typography */}
               <Typography variant="body1" sx={{ mb: 2 }}>
                 ${product.price.toFixed(2)}
               </Typography>
 
-              {/* Replaced <button> with Button */}
               <Button
-                variant="contained" // Gives background
-                color="primary" // Uses blue theme color
-                fullWidth // Replaces width: "100%"
+                variant="contained"
+                color="primary"
+                fullWidth
                 onClick={() => onAddToCart(product)}
                 sx={{
-                  fontWeight: "bold", // Your custom style
+                  fontWeight: "bold",
                 }}
               >
                 Add to Cart
