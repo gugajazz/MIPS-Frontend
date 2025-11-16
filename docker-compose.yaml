@@ -50,3 +50,18 @@ services:
     volumes:
       - ./mips_shopping_cart:/app
       - /app/node_modules
+
+  ###################################
+  # Example Page Remote Application (Provider)
+  ###################################
+  example-page:
+    container_name: mips_example_page
+    build:
+      context: ./mips_example # Path to the remote's folder
+      dockerfile: Dockerfile # Name of the Dockerfile inside it
+    command: pnpm dev
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./mips_example:/app
+      - /app/node_modules

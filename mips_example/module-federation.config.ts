@@ -1,16 +1,10 @@
 import { createModuleFederationConfig } from "@module-federation/rsbuild-plugin";
 
 export default createModuleFederationConfig({
-  name: "mips_host",
-  remotes: {
-    mips_product_page_provider:
-      "mips_product_page@http://localhost:3001/mf-manifest.json",
-    mips_shopping_cart_provider:
-      "mips_shopping_cart@http://localhost:3002/mf-manifest.json",
-    mips_example_provider:
-      "mips_example@http://localhost:3003/mf-manifest.json",
+  name: "mips_example",
+  exposes: {
+    "./ExamplePage": "./src/components/Example.tsx",
   },
-  shareStrategy: "loaded-first",
   shared: {
     react: {
       singleton: true,

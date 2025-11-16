@@ -52,6 +52,10 @@ const RemoteShoppingCartPage = React.lazy(
   () => import("mips_shopping_cart_provider/ShoppingCartPage")
 );
 
+const RemoteExamplePage = React.lazy(
+  () => import("mips_example_provider/ExamplePage")
+);
+
 // --- New HomePage using MUI ---
 const HomePage = () => (
   <Box sx={{ p: 3 }}>
@@ -62,6 +66,12 @@ const HomePage = () => (
       This content is rendered by the host application. Use the navigation bar
       above to load the remote micro-frontends.
     </Typography>
+
+    <SafeComponent>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <RemoteExamplePage />
+      </Box>
+    </SafeComponent>
   </Box>
 );
 
